@@ -143,10 +143,13 @@ def submission(request):
 
 @login_required
 def changePassword(request):
+    print "booohhyeahhh!"
     error = 0
     if request.method == "POST":
+        print "viva barca"
         old_password = request.POST['oldPassword']
         new_password = request.POST['newPassword']
+        print old_password, new_password
         user = authenticate(username=request.session['username'], password=old_password)
         if user is not None:
             query = Hacker.objects.get(username=request.session['username'])
@@ -161,6 +164,10 @@ def changePassword(request):
             t = loader.get_template('users/profile.html')
             c = RequestContext(request, {'error': error})
             return HttpResponse(t.render(c))
+
+@login_required
+def change(request):
+    return render(request, 'users/changepass.html')
 
 @login_required
 def comment(request):
@@ -236,24 +243,19 @@ def submitSolution(request):
     return HttpResponseForbidden('allowed only via POST')
 
 
-def register(request):
-    print "456456"  
+def register(request): 
     errors = False
     if request.method == 'POST' and request.is_ajax():
-        print "shubham is hot"
         username = request.POST['user_name']
         password = request.POST['pass_word']
         email = request.POST['email']
         roll = request.POST['roll']
-        print username, password, email, roll
+
         query = Hacker.objects.filter(username=username)
         if query:
-            print "mara gayi"
             errors = True
         else:
-            print query
             user = Hacker.objects.create_user(username, email, roll, password)
-            print user
             user.save()
             payload = {'username':username,'password':password,'email':email}
             requests.get("http://localhost:8000/v1/userRegister",params=payload)

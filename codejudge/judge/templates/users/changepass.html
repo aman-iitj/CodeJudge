@@ -1,0 +1,105 @@
+{% include "users/base.html" %}
+
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+              <a href="/judge/home" class="navbar-brand">TAJ-IIT Jodhpur</a>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br>
+    <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="col-md-4"></div>
+      <div class="col-md-4" style="text-align: center;">
+        <h3><strong>Password Change</strong></h3>
+        <h4><i>Please input old and new passwords to continue</i></h4>
+        <hr>
+        <span id="errors" style="background-color:#a00;"></span>
+        <br>
+        <form role="form" id="passChangeForm"  action="javascript:passChange()" >
+          {% csrf_token %}
+          <div class="form-group" style="text-align: left;">
+            <label for="inputOldPassword">Existing Password</label>
+            <input required type="password" class="form-control" id="Oldpassword" placeholder="Please input your existing password" name="Old Password">
+          </div>
+          <div class="form-group" style="text-align: left;">
+            <label for="inputNewPassword">New Password</label>
+            <input required type="password" class="form-control" id="Newpassword" placeholder="Please enter your new password" name="New Password">
+          </div>
+          <input type="submit" class="btn btn-primary" value="Change Password">
+        </form>
+        <hr>
+      </div>  
+      </div>
+    </div>
+  </div>
+</body>
+
+<script type="text/javascript">
+    function passChange(){
+      var oldPassword = document.getElementById("Oldpassword").value;
+      var newPassword = document.getElementById("Newpassword").value;
+      var done = false;
+      var error; 
+      if(!oldPassword && !newPassword){
+        error = "Please fill both the fields"
+        $("#errors").html(error).addClass("badge");
+      }else if(!oldPassword){
+        error = "Hey, do not forget your Old Password!"
+        $("#errors").html(error).addClass("badge");
+      }else if(!newPassword){
+        error = "you need a new one right?"
+        $("#errors").html(error).addClass("badge");
+      }else{
+        done = true;
+      }
+      if(done){
+        var passChangeForm = $("#passChangeForm").serialize();
+        $.ajax({
+          type:"POST",
+          url:"/judge/changepassword/",
+          dataType:"json",
+          data: passChangeForm,
+          success:function(data){
+            if(data.errors){
+              error = "Invalid details! Please come again";
+              $("#errors").html(error).addClass("badge");
+              done=false;
+            }else{
+                window.location.href = "/judge"
+            }
+          }
+        });
+      }
+    }
+    // using jQuery
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+</script>

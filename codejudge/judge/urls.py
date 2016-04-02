@@ -20,6 +20,7 @@ urlpatterns = patterns('',
 	url(r'^comment/$', views.comment, name='index'),
 	url(r'^changepassword/$', views.changePassword, name='index'),
 	url(r'^newUser/$', views.newUser, name='index'),
+	url(r'^changePass/$', views.change, name='index'),
 	url(r'^trail/$', views.trial, name='index'),
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
