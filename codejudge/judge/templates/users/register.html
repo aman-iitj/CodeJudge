@@ -28,6 +28,10 @@
               <input required type="email" class="form-control" id="newUserEmail" placeholder="Enter your IITJ email id" name="email">
             </div>
             <div class="form-group" style="text-align: left;">
+              <label for="rollNumber">Roll Number</label>
+              <input required type="text" class="form-control" id="newRoll" placeholder="Enter your IITJ roll number" name="roll">
+            </div>
+            <div class="form-group" style="text-align: left;">
               <label for="inputPassword">Password</label>
               <input required type="password" class="form-control" id="newUserPassword" placeholder="Password" name="pass_word">
             </div>
@@ -44,6 +48,7 @@
       var user = document.getElementById("newUser").value;
       var password = document.getElementById("newUserPassword").value;
       var email = document.getElementById("newUserEmail").value;
+      var roll = document.getElementById("newRoll").value;
       var done = false;
       var error;
       if(!user && !password && !email){
@@ -56,19 +61,22 @@
         error = "Oh you must be having a name!";
         $("#newUserErrors").html(error).addClass("badge");
       }else if(!email && !password){
-        error = "You surely need a password friend!";
+        error = "You surely need a password!";
         $("#newUserErrors").html(error).addClass("badge");
       }else if(!user){
         error = "Oh you must be having a name!";
         $("#newUserErrors").html(error).addClass("badge");
       }else if(!password){
-        error = "You surely need a password friend!";
+        error = "You surely need a password!";
         $("#newUserErrors").html(error).addClass("badge");
       }else if(!email){
-        error = "Haven't you got an email?";
+        error = "please enter an email id!";
         $("#newUserErrors").html(error).addClass("badge");
+      }else if(!roll){
+        error = "oops, you forgot something!";
+        $("#newUserErrors").html(error).addClass("badge"); 
       }else if(user.toLowerCase()=="admin"){
-        error = "Admin is actually your daddy!";
+        error = "you don't have admin priveleges";
         $("#newUserErrors").html(error).addClass("badge");
       }else{
         done = true;

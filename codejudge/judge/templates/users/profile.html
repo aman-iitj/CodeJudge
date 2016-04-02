@@ -21,25 +21,26 @@
             </div>
             {% for h in hacker %}
             <div class="col-md-2">
-            {% if h.profileImage %}
-            <img src="{{MEDIA_URL}}{{h.profileImage}}" height="15%" width="60%">
-            {% else %}
-            <img src="{{MEDIA_URL}}avatar/student.png" height="15%" width="60%">
-            {% endif %}
-            <br><br>
-            <form action="/judge/changepic/" method="post" enctype="multipart/form-data">{% csrf_token %}
-                <p>
-                    <input id="id_image" type="file" class="" name="image">
-                </p>
-                <input class="btn btn-primary" type="submit" value="Change Profile Picture" />
-            </form>
-            <form action="/judge/removepic/" method="post" enctype="multipart/form-data">{% csrf_token %}
-                <input class="btn btn-primary" type="submit" value="Remove Profile Picture" />
-            </form>
+                {% if h.profileImage %}
+                <img src="{{MEDIA_URL}}{{h.profileImage}}" height="15%" width="60%">
+                {% else %}
+                <img src="{{MEDIA_URL}}avatar/student.png" height="15%" width="60%">
+                {% endif %}
+                <br><br>
+                <form action="/judge/changepic/" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <p>
+                        <input id="id_image" type="file" class="" name="image">
+                    </p>
+                    <input class="btn btn-primary" type="submit" value="Change Profile Picture" />
+                </form>
+                <form action="/judge/removepic/" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <input class="btn btn-primary" type="submit" value="Remove Profile Picture" />
+                </form>
             </div>
             <div class="col-md-4">
                 <p><b>Username: </b>{{h.username}}</p>
                 <p><b>Email: </b>{{h.email}}</p>
+                <p><b>Roll Number: </b>{{h.roll}}</p>               
             </div> 
             {% endfor %}
         </div>

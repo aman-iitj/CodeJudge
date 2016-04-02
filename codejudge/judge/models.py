@@ -7,7 +7,7 @@ from ckeditor.fields import RichTextField
 # Create your models here.
 
 class AuthUserManager(BaseUserManager):
-    def create_user(self, username, email, password=None):
+    def create_user(self, username, email, roll, password=None):
         if not email:
             raise ValueError('Users must have an email address')
         if not username:
@@ -34,6 +34,7 @@ class Hacker(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email address', unique=True, max_length=255)
     first_name = models.CharField(max_length=30, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
+    roll = models.CharField(max_length=50, null=False, blank=False, default = '0')
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True, null=False)
     is_staff = models.BooleanField(default=False, null=False)

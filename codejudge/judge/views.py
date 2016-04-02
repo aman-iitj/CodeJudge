@@ -96,7 +96,22 @@ def contest(request, contestId):
 @login_required
 def profile(request):
     hacker = Hacker.objects.filter(username = request.session['username'])
-    return render(request, 'users/profile.html', {'hacker':hacker}) 
+    h = Hacker.objects.get(username=request.session['username'])
+    solution = Solution.objects.filter(hacker_id = h.id)
+    cont = Contest.objects.all()
+    l1 = []
+    for c in cont:
+        l2 = [False]*c.problem_set.all().size()
+        l1.append(l2)
+    for c in cont:
+        SolSet = c.solution_set.all()
+        ProSet = c.problem_set.all()
+        for p in ProSet:
+            ProSolSet= p.SolSet_set.all()
+            for x in ProSolSet:
+                if x.status == 4:
+                    print "yeah"
+    return render(request, 'users/profile.html', {'hacker':hacker, 'sols': l1})  
 
 @login_required
 def changeProfilePic(request):
@@ -222,17 +237,23 @@ def submitSolution(request):
 
 
 def register(request):
+    print "456456"  
     errors = False
     if request.method == 'POST' and request.is_ajax():
+        print "shubham is hot"
         username = request.POST['user_name']
         password = request.POST['pass_word']
         email = request.POST['email']
+        roll = request.POST['roll']
+        print username, password, email, roll
         query = Hacker.objects.filter(username=username)
         if query:
+            print "mara gayi"
             errors = True
         else:
             print query
-            user = Hacker.objects.create_user(username, email, password)
+            user = Hacker.objects.create_user(username, email, roll, password)
+            print user
             user.save()
             payload = {'username':username,'password':password,'email':email}
             requests.get("http://localhost:8000/v1/userRegister",params=payload)

@@ -89,11 +89,10 @@
                   <div class="panel-heading"><span class="glyphicon glyphicon-envelope"> Useful Links</div>
                       <div class="panel-body" style="max-height: 10em;overflow-y: scroll;">
                          <ul>
-                             <li>Hello</li>
-                             <li>Hello</li>
-                             <li>Hello</li>
-                             <li>Hello</li>
+                             {% for l in link %}
+                             <li><a href="{{ l.LinkUrl }}" target="blank"> {{ l.LinkDescription }} </a></li>
                          </ul>
+                             {% endfor %}
                       </div>
                 </div>
             </div>
